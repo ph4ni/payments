@@ -315,6 +315,7 @@ class RazorpaySettings(Document):
 			existing_reg = frappe.get_doc("Registrations", self.data.reference_docname)
 			if existing_reg:
 				existing_reg.db_set("paymentstatus","Completed")
+			
 
 		else:
 			redirect_url = "payment-failed"

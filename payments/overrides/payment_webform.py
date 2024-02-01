@@ -26,7 +26,7 @@ class PaymentWebForm(WebForm):
 		if getattr(self, "accept_payment", False):
 			controller = get_payment_gateway_controller(self.payment_gateway)
 
-			title = f"Payment for Freedom Fest"
+			title = f"Payment for {doc.doctype}"
 			amount = self.amount
 			if self.amount_based_on_field:
 				amount = doc.get(self.amount_field)

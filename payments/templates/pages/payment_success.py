@@ -2,9 +2,8 @@
 # License: MIT. See LICENSE
 
 import frappe
-
+from frappe.utils import get_url
 no_cache = True
-
 
 def get_context(context):
 	token = frappe.local.form_dict.token
@@ -13,5 +12,3 @@ def get_context(context):
 	context.payment_message = ""
 	if hasattr(doc, "get_payment_success_message"):
 		context.payment_message = doc.get_payment_success_message()
-
-

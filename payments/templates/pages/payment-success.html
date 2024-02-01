@@ -9,7 +9,9 @@
 			{{ _("Success") }}</span>
 	</div>
 	<p>{{ payment_message or _("You have successfully registered for KLU Freedom Fest 2024!") }}</p>
-	<p>{{ _("Save this QR Code for attendance! We will also send an email.") }}</p>
+	<p> Your id is: <strong>{{ frappe.form_dict.docname }}</strong></p>
+	<h6>{{ _("Take a screenshot of this QR Code for attendance. ") }}</h6>
+	<br />
 	{% if not payment_message %}
 		<div>
 			<div id="qrcode"></div>
