@@ -81,6 +81,7 @@ from payments.utils import create_payment_gateway
 class RazorpaySettings(Document):
 	supported_currencies = ["INR"]
 
+	
 	def init_client(self):
 		if self.api_key:
 			secret = self.get_password(fieldname="api_secret", raise_exception=False)
@@ -250,6 +251,8 @@ class RazorpaySettings(Document):
 				"status": 401,
 			}
 
+	
+
 	def authorize_payment(self):
 		"""
 		An authorization is performed when user’s payment details are successfully authenticated by the bank.
@@ -315,6 +318,22 @@ class RazorpaySettings(Document):
 			existing_reg = frappe.get_doc("Registrations", self.data.reference_docname)
 			if existing_reg:
 				existing_reg.db_set("paymentstatus","Completed")
+			subject = "KLU Freedom Fest Registration Successful"
+			message = "Hi <b>{}</b>, <br><br> Thank you for registering for KLU Freedom Fest 2024! Your payment has been completed successfully.<br>Your registration id is: {} <br><br>Your QR Code:<br><br><img src=\"https://barcode.tec-it.com/barcode.ashx?data={}&code=QRCode\">  <br><br>Details:<br>Name: {}<br>Roll number: {}<br>College: {}<br>Department: {}<br><br> Please join the Telegram group for more info: <a href=\"https://telegram.me/ffestklu\">t.me/ffestklu</a> <br>  And check the schedule here: <a href=\"https://www.swechaap.org/freedomfest/schedule\">swechaap.org/freedomfest/schedule</a><br><br> Regards,<br> Swecha AP<br>".format(
+				existing_reg.student_name,
+				existing_reg.name,
+				existing_reg.name,
+				existing_reg.student_name,
+				existing_reg.roll_number,
+				existing_reg.student_college,
+				existing_reg.student_department
+			)
+
+			frappe.sendmail(
+				recipients=[existing_reg.student_email],
+				subject=subject,
+				message=message
+			)
 			
 
 		else:
@@ -326,6 +345,9 @@ class RazorpaySettings(Document):
 			redirect_url += "&" + urlencode({"redirect_message": redirect_message})
 
 		return {"redirect_to": redirect_url, "status": status}
+
+	
+
 
 	def get_settings(self, data):
 		settings = frappe._dict(
